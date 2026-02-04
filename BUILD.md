@@ -16,7 +16,7 @@ Notepad++ is always built **with** Boost regex PCRE support instead of default c
 
 ### Build `notepad++.exe`
 
- 1. Open [`PowerEditor\visual.net\notepadPlus.sln`](https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/PowerEditor/visual.net/notepadPlus.sln)
+1. Open [`PowerEditor\visual.net\notepadPlus.sln`](https://github.com/notepad-plus-plus/notepad-plus-plus/blob/llm/PowerEditor/visual.net/notepadPlus.sln)
  2. Select a solution configuration (Debug or Release) and a solution platform (x64 or Win32 or ARM64)
  3. Build Notepad++ solution like a normal Visual Studio project. This will also build the dependent Scintilla and Lexilla projects.
 
@@ -27,16 +27,16 @@ As mentioned above, you'll need `libScintilla.lib` and `libLexilla.lib` for the 
 #### Build `libScintilla.lib` with boost and `libLexilla.lib` via nmake
 
 This is not necessary any more and just here for completeness as this option is still available.
-Boost is taken from [boost 1.90.0](https://www.boost.org/users/history/version_1_90_0.html) and stripped down to the project needs available at [boost](https://github.com/notepad-plus-plus/notepad-plus-plus/tree/master/boostregex/boost) in this repo.
+Boost is taken from [boost 1.90.0](https://www.boost.org/users/history/version_1_90_0.html) and stripped down to the project needs available at [boost](https://github.com/notepad-plus-plus/notepad-plus-plus/tree/llm/boostregex/boost) in this repo.
 
 1. Open the Developer Command Prompt for Visual Studio
-2. Go into the [`scintilla\win32\`](https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/scintilla/win32/)
+2. Go into the [`scintilla\win32\`](https://github.com/notepad-plus-plus/notepad-plus-plus/blob/llm/scintilla/win32/)
 3. Build the same configuration as notepad++:
    - Release: `nmake -f scintilla.mak`
    - Debug: `nmake DEBUG=1 -f scintilla.mak`
    - Example:
    `nmake -f scintilla.mak`
-4. Go into the [`lexilla\src\`](https://github.com/notepad-plus-plus/notepad-plus-plus/tree/master/lexilla/src/)
+4. Go into the [`lexilla\src\`](https://github.com/notepad-plus-plus/notepad-plus-plus/tree/llm/lexilla/src/)
 5. Build the same configuration as notepad++:
    - Release: `nmake -f lexilla.mak`
    - Debug: `nmake DEBUG=1 -f lexilla.mak`

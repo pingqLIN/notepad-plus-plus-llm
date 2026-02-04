@@ -24,7 +24,7 @@ _Since the release of version 7.6.5 Notepad++ is signed using GPG with the follo
 - **Created:** 2019-03-11
 - **Expires:** 2027-03-13
 
-https://github.com/notepad-plus-plus/notepad-plus-plus/blob/master/nppGpgPub.asc
+https://github.com/notepad-plus-plus/notepad-plus-plus/blob/llm/nppGpgPub.asc
 
 
 Supported OS

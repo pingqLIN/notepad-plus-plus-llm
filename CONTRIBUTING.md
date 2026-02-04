@@ -8,7 +8,7 @@ Bug reports are appreciated. Following a few guidelines listed below will help s
 
 1. Search the issue tracker to see if it has already been reported.
 2. Disable your plugins to see if one of them is the problem. You can do this by renaming your `plugins` folder to something else.
-3. Only report an issue with a plugin if it is one of the standard plugins included in the Notepad++ installation. Any other plugin issue should be reported to its respective issue tracker (see e.g. [plugin_list_x86.md](https://github.com/notepad-plus-plus/nppPluginList/blob/master/doc/plugin_list_x86.md) or [plugin_list_x64.md](https://github.com/notepad-plus-plus/nppPluginList/blob/master/doc/plugin_list_x64.md) to find the homepage with further information on that for a plugins). The standard plugins include (for v7.9.5):
+3. Only report an issue with a plugin if it is one of the standard plugins included in the Notepad++ installation. Any other plugin issue should be reported to its respective issue tracker (see e.g. [plugin_list_x86.md](https://github.com/notepad-plus-plus/nppPluginList/blob/llm/doc/plugin_list_x86.md) or [plugin_list_x64.md](https://github.com/notepad-plus-plus/nppPluginList/blob/llm/doc/plugin_list_x64.md) to find the homepage with further information on that for plugins). The standard plugins include (for v7.9.5):
     * NppExport
     * Converter
     * mimeTools
@@ -35,9 +35,9 @@ Opening an issue beforehand allows the administrators and the community to discu
 7. PR of reformatting (changing of ws/TAB, line endings or coding style) of source code won't be accepted. Use issue trackers for your request instead.
 8. Typo fixing and code refactoring won't be accepted - please create issues with title started with `TYPO` to request the changing.
 9. The PR for the enhancement of Function List parser should also include unit test. Please refer [here](https://npp-user-manual.org/docs/function-list/#contribute-your-new-or-enhanced-parser-rule-to-the-notepad-codebase) for more information. 
-10. Address the review change requests by pushing new commits to the same PR. Avoid amending a commit and then force pushing it. All the PR commits are squashed before merging to the main branch.
-11. When creating new PR, try to base it on latest master.
-12. Normally you don't need to merge `upstream/master` (using git or via github sync), if your PR is based on older `upstream/master`. If you need to base it on latest `master` (e.g. to check and fix merge conflict), use commands `git fetch upstream` to get latest `master` and then `git rebase upstream/master` to rebase it onto this latest `upstream/master`.
+10. Address the review change requests by pushing new commits to the same PR. Avoid amending a commit and then force pushing it. All the PR commits are squashed before merging to the llm branch.
+11. When creating new PR, try to base it on latest llm.
+12. Normally you don't need to merge `upstream/llm` (using git or via github sync), if your PR is based on older `upstream/llm`. If you need to base it on latest `llm` (e.g. to check and fix merge conflict), use commands `git fetch upstream` to get latest `llm` and then `git rebase upstream/llm` to rebase it onto this latest `upstream/llm`.
 13. Finally, please test your pull requests, at least once.
 
 In short: The easier the code review is, the better the chance your pull request will get accepted.
