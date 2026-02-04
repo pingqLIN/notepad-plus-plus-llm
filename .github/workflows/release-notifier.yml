@@ -2,7 +2,7 @@ name: Plugin Files Release Notifier
 
 on:
   push:
-    branches: ['master']
+    branches: ['llm']
 
   workflow_dispatch:
 
