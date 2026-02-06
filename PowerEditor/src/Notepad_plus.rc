@@ -610,6 +610,15 @@ BEGIN
             MENUITEM "Search on Internet",      IDM_EDIT_SEARCHONINTERNET
             MENUITEM "Change Search Engine...", IDM_EDIT_CHANGESEARCHENGINE
         END
+        POPUP "&AI Assistant"
+        BEGIN
+            MENUITEM "Explain Code",            IDM_EDIT_AI_EXPLAIN_CODE
+            MENUITEM "Refactor Code",           IDM_EDIT_AI_REFACTOR_CODE
+            MENUITEM "Add Comments",            IDM_EDIT_AI_ADD_COMMENTS
+            MENUITEM "Fix Code",                IDM_EDIT_AI_FIX_CODE
+            MENUITEM SEPARATOR
+            MENUITEM "Custom Prompt...",        IDM_EDIT_AI_CUSTOM_PROMPT
+        END
         MENUITEM SEPARATOR
         POPUP "Multi-select All"
         BEGIN
@@ -854,6 +863,7 @@ BEGIN
         MENUITEM "Document Map",          IDM_VIEW_DOC_MAP
         MENUITEM "Document List",         IDM_VIEW_DOCLIST
         MENUITEM "Function List",         IDM_VIEW_FUNC_LIST
+        MENUITEM "AI Assistant",          IDM_VIEW_AI_ASSISTANT_PANEL
         MENUITEM SEPARATOR
         MENUITEM "Synchronize Vertical Scrolling",      IDM_VIEW_SYNSCROLLV
         MENUITEM "Synchronize Horizontal Scrolling",    IDM_VIEW_SYNSCROLLH

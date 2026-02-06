@@ -1,5 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|ARM64">
       <Configuration>Debug</Configuration>
@@ -130,6 +131,9 @@
     <ClCompile Include="..\src\ScintillaComponent\columnEditor.cpp" />
     <ClCompile Include="..\src\MISC\Common\Common.cpp" />
     <ClCompile Include="..\src\MISC\Common\FileInterface.cpp" />
+    <ClCompile Include="..\src\MISC\Common\HttpClient.cpp" />
+    <ClCompile Include="..\src\MISC\Common\LLMApiClient.cpp" />
+    <ClCompile Include="..\src\MISC\Common\SecureStorage.cpp" />
     <ClCompile Include="..\src\WinControls\ContextMenu\ContextMenu.cpp" />
     <ClCompile Include="..\src\WinControls\OpenSaveFileDialog\CustomFileDialog.cpp" />
     <ClCompile Include="..\src\WinControls\PluginsAdmin\pluginsAdmin.cpp" />
@@ -206,6 +210,8 @@
     <ClCompile Include="..\src\WinControls\ReadDirectoryChanges\ReadDirectoryChanges.cpp" />
     <ClCompile Include="..\src\WinControls\ReadDirectoryChanges\ReadDirectoryChangesPrivate.cpp" />
     <ClCompile Include="..\src\WinControls\ReadDirectoryChanges\ReadFileChanges.cpp" />
+    <ClCompile Include="..\src\WinControls\AIAssistant\aiAssistantPanel.cpp" />
+    <ClCompile Include="..\src\WinControls\AIAssistant\aiAssistantSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\MISC\md5\md5Dlgs.rc" />
@@ -234,6 +240,8 @@
     <ResourceCompile Include="..\src\WinControls\WindowsDlg\WindowsDlg.rc" />
     <ResourceCompile Include="..\src\WinControls\ColourPicker\WordStyleDlg.rc" />
     <ResourceCompile Include="..\src\WinControls\FileBrowser\fileBrowser.rc" />
+    <ResourceCompile Include="..\src\WinControls\AIAssistant\aiAssistantSettings.rc" />
+    <ResourceCompile Include="..\src\WinControls\AIAssistant\aiAssistantPanel.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\clipboardFormats.h" />
@@ -281,6 +289,9 @@
     <ClInclude Include="..\src\ScintillaComponent\columnEditor.h" />
     <ClInclude Include="..\src\MISC\Common\Common.h" />
     <ClInclude Include="..\src\MISC\Common\FileInterface.h" />
+    <ClInclude Include="..\src\MISC\Common\HttpClient.h" />
+    <ClInclude Include="..\src\MISC\Common\LLMApiClient.h" />
+    <ClInclude Include="..\src\MISC\Common\SecureStorage.h" />
     <ClInclude Include="..\src\WinControls\ContextMenu\ContextMenu.h" />
     <ClInclude Include="..\src\WinControls\OpenSaveFileDialog\CustomFileDialog.h" />
     <ClInclude Include="..\src\WinControls\PluginsAdmin\pluginsAdmin.h" />
@@ -378,6 +389,9 @@
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ReadDirectoryChangesPrivate.h" />
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ThreadSafeQueue.h" />
     <ClInclude Include="..\src\WinControls\ReadDirectoryChanges\ReadFileChanges.h" />
+    <ClInclude Include="..\src\WinControls\AIAssistant\aiAssistantPanel.h" />
+    <ClInclude Include="..\src\WinControls\AIAssistant\aiAssistantPanel_rc.h" />
+    <ClInclude Include="..\src\WinControls\AIAssistant\aiAssistantSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="..\src\notepad++.exe.manifest" />

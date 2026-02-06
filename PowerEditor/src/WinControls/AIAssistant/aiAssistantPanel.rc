@@ -1,0 +1,62 @@
+// This file is part of Notepad++ project
+// Copyright (C)2025 Don HO <don.h@free.fr>
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// at your option any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+#include <windows.h>
+#include "aiAssistantPanel_rc.h"
+
+IDD_AIASSISTANT_PANEL DIALOGEX 0, 0, 280, 300
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE
+CAPTION "AI Assistant"
+FONT 9, "Segoe UI", 400, 0, 0x0
+BEGIN
+    COMBOBOX        IDC_AI_PROVIDER_COMBO, 5, 7, 50, 100, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_AI_MODEL_COMBO, 58, 7, 70, 100, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Sign in", IDC_AI_COPILOT_SIGNIN_BUTTON, 132, 6, 30, 14
+    PUSHBUTTON      "A+", IDC_AI_FONT_INCREASE_BUTTON, 166, 6, 18, 14
+    PUSHBUTTON      "A-", IDC_AI_FONT_DECREASE_BUTTON, 186, 6, 18, 14
+    PUSHBUTTON      "Settings", IDC_AI_SETTINGS_BUTTON, 208, 6, 35, 14
+    PUSHBUTTON      "Clear", IDC_AI_CLEAR_BUTTON, 246, 6, 28, 14
+    
+    EDITTEXT        IDC_AI_CHAT_HISTORY, 5, 26, 270, 230, ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | WS_VSCROLL | WS_BORDER
+    
+    EDITTEXT        IDC_AI_INPUT_EDIT, 5, 260, 220, 35, ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL | WS_BORDER
+    PUSHBUTTON      "Send", IDC_AI_SEND_BUTTON, 230, 260, 45, 35
+END
+
+IDD_AI_FLOATING_TOOLBAR DIALOGEX 0, 0, 200, 25
+STYLE DS_SETFONT | WS_POPUP
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_TOPMOST
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Explain", IDC_AI_BTN_EXPLAIN, 0, 0, 40, 25
+    PUSHBUTTON      "Refactor", IDC_AI_BTN_REFACTOR, 40, 0, 40, 25
+    PUSHBUTTON      "Comment", IDC_AI_BTN_COMMENT, 80, 0, 40, 25
+    PUSHBUTTON      "Fix", IDC_AI_BTN_FIX, 120, 0, 30, 25
+    PUSHBUTTON      "...", IDC_AI_BTN_MORE, 150, 0, 25, 25
+END
+
+IDD_AI_FLOATING_DIALOG DIALOGEX 0, 0, 300, 200
+STYLE DS_SETFONT | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "AI Chat"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_AI_FLOATING_CHAT_HISTORY, 5, 5, 290, 150, ES_MULTILINE | ES_READONLY | ES_AUTOVSCROLL | WS_VSCROLL | NOT WS_BORDER
+    EDITTEXT        IDC_AI_FLOATING_INPUT_EDIT, 5, 160, 240, 35, ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL | NOT WS_BORDER
+    PUSHBUTTON      "Send", IDC_AI_FLOATING_SEND_BUTTON, 250, 160, 45, 35
+END

@@ -1,0 +1,59 @@
+// This file is part of Notepad++ project
+// Copyright (C)2025 Don HO <don.h@free.fr>
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// at your option any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+#include <windows.h>
+#include "aiAssistantSettings.h"
+
+// AI Assistant Settings Dialog
+IDD_AIASSISTANT_SETTINGS DIALOGEX 0, 0, 320, 250
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "AI Assistant Settings"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    // OpenAI Section
+    LTEXT           "OpenAI API Key:", -1, 10, 15, 60, 10
+    EDITTEXT        IDC_OPENAI_KEY_EDIT, 75, 12, 230, 14, ES_AUTOHSCROLL | ES_PASSWORD
+    
+    // Gemini Section
+    LTEXT           "Gemini API Key:", -1, 10, 35, 60, 10
+    EDITTEXT        IDC_GEMINI_KEY_EDIT, 75, 32, 230, 14, ES_AUTOHSCROLL | ES_PASSWORD
+    
+    // Claude Section
+    LTEXT           "Claude API Key:", -1, 10, 55, 60, 10
+    EDITTEXT        IDC_CLAUDE_KEY_EDIT, 75, 52, 230, 14, ES_AUTOHSCROLL | ES_PASSWORD
+    
+    // Copilot Section
+    LTEXT           "Copilot Token:", -1, 10, 75, 60, 10
+    EDITTEXT        IDC_COPILOT_KEY_EDIT, 75, 72, 230, 14, ES_AUTOHSCROLL | ES_PASSWORD
+    
+    // Default Provider Section
+    GROUPBOX        "Default Provider", -1, 10, 95, 300, 45
+    LTEXT           "Select default AI provider:", -1, 20, 110, 100, 10
+    COMBOBOX        IDC_DEFAULT_PROVIDER_COMBO, 120, 108, 100, 80, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    
+    // Instructions
+    GROUPBOX        "How to get API Keys", -1, 10, 145, 300, 60
+    LTEXT           "OpenAI: platform.openai.com - API Keys", -1, 20, 158, 280, 10
+    LTEXT           "Gemini: ai.google.dev - Get API Key", -1, 20, 170, 280, 10
+    LTEXT           "Claude: console.anthropic.com - API Keys", -1, 20, 182, 280, 10
+    LTEXT           "Copilot: Use Sign in button in AI panel", -1, 20, 194, 280, 10
+    
+    // Buttons
+    PUSHBUTTON      "Test Connection", IDC_TEST_CONNECTION_BTN, 10, 215, 80, 20
+    DEFPUSHBUTTON   "OK", IDOK, 200, 215, 55, 20
+    PUSHBUTTON      "Cancel", IDCANCEL, 260, 215, 50, 20
+END
