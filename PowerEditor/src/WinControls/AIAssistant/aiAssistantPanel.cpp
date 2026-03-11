@@ -21,9 +21,9 @@
 #include "ScintillaEditView.h"
 #include "aiAssistantSettings.h"
 #include <ctime>
+#include <shellapi.h>
 #include <sstream>
 #include <winhttp.h>
-#include <shellapi.h>
 
 #pragma comment(lib, "winhttp.lib")
 
@@ -34,7 +34,7 @@ constexpr DWORD COPILOT_POLL_INTERVAL_MS = 5000;
 constexpr int DEFAULT_FONT_SIZE = 10;
 constexpr int MIN_FONT_SIZE = 8;
 constexpr int MAX_FONT_SIZE = 18;
-}
+} // namespace
 
 void AIAssistantPanel::initControls() {
   _config = AIAssistantSettings::loadSecureConfig();
@@ -53,7 +53,7 @@ void AIAssistantPanel::initControls() {
     ::SendMessage(hProviderCombo, CB_SETCURSEL,
                   static_cast<int>(_currentProvider), 0);
   }
-  
+
   updateModelCombo();
 }
 
@@ -187,17 +187,19 @@ std::wstring AIAssistantPanel::callLLMAPI(const std::wstring &prompt) {
   if (_currentProvider == LLMProvider::Copilot) {
     if (!_copilotTokens.isAuthenticated) {
       return L"[Notice] GitHub Copilot requires sign-in.\n\n"
-             L"Please click the 'Sign in' button to authenticate with your GitHub account.";
+             L"Please click the 'Sign in' button to authenticate with your "
+             L"GitHub account.";
     }
-    
-    LLMResponse response = LLMApiClient::callCopilot(_copilotTokens, prompt, _currentModel);
-    
+
+    LLMResponse response =
+        LLMApiClient::callCopilot(_copilotTokens, prompt, _currentModel);
+
     if (!_copilotTokens.isAuthenticated) {
       return L"[Error] Copilot session expired. Please sign in again.";
     }
-    
+
     saveCopilotTokenToStorage();
-    
+
     if (response.success) {
       return response.content;
     } else {
@@ -341,7 +343,7 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
     resizeControls();
     return TRUE;
   }
-  
+
   case WM_DESTROY: {
     if (_chatFont) {
       ::DeleteObject(_chatFont);
@@ -349,7 +351,7 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
     }
     return TRUE;
   }
-  
+
   case NPPM_INTERNAL_REFRESHDARKMODE: {
     applyDarkModeTheme();
     return TRUE;
@@ -384,14 +386,16 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
       }
       return TRUE;
     }
-    
+
     case IDC_AI_MODEL_COMBO: {
       if (HIWORD(wParam) == CBN_SELCHANGE) {
         HWND hModelCombo = ::GetDlgItem(_hSelf, IDC_AI_MODEL_COMBO);
-        int sel = static_cast<int>(::SendMessage(hModelCombo, CB_GETCURSEL, 0, 0));
+        int sel =
+            static_cast<int>(::SendMessage(hModelCombo, CB_GETCURSEL, 0, 0));
         if (sel >= 0) {
           wchar_t buffer[128];
-          ::SendMessage(hModelCombo, CB_GETLBTEXT, sel, reinterpret_cast<LPARAM>(buffer));
+          ::SendMessage(hModelCombo, CB_GETLBTEXT, sel,
+                        reinterpret_cast<LPARAM>(buffer));
           _currentModel = buffer;
         }
       }
@@ -415,7 +419,7 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
       }
       return TRUE;
     }
-    
+
     case IDC_AI_COPILOT_SIGNIN_BUTTON: {
       if (_copilotAuthInProgress) {
         ::KillTimer(_hSelf, COPILOT_POLL_TIMER_ID);
@@ -428,12 +432,12 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
       }
       return TRUE;
     }
-    
+
     case IDC_AI_FONT_INCREASE_BUTTON: {
       increaseFontSize();
       return TRUE;
     }
-    
+
     case IDC_AI_FONT_DECREASE_BUTTON: {
       decreaseFontSize();
       return TRUE;
@@ -441,7 +445,7 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
     }
     break;
   }
-  
+
   case WM_TIMER: {
     if (wParam == COPILOT_POLL_TIMER_ID) {
       pollCopilotAuth();
@@ -449,7 +453,7 @@ intptr_t CALLBACK AIAssistantPanel::run_dlgProc(UINT message, WPARAM wParam,
     }
     break;
   }
-  
+
   case WM_CTLCOLOREDIT:
   case WM_CTLCOLORSTATIC: {
     if (NppDarkMode::isEnabled()) {
@@ -480,11 +484,13 @@ void AIAssistantPanel::initiateCopilotSignIn() {
   if (_copilotAuthInProgress) {
     return;
   }
-  
+
   _copilotDeviceCode = LLMApiClient::initiateCopilotDeviceFlow();
-  
-  if (_copilotDeviceCode.userCode.empty() || _copilotDeviceCode.deviceCode.empty()) {
-    std::wstring message = L"[Error] Failed to initiate GitHub Copilot sign-in. Please try again.";
+
+  if (_copilotDeviceCode.userCode.empty() ||
+      _copilotDeviceCode.deviceCode.empty()) {
+    std::wstring message =
+        L"[Error] Failed to initiate GitHub Copilot sign-in. Please try again.";
     std::wstring debugInfo = LLMApiClient::getLastCopilotAuthDebug();
     if (!debugInfo.empty()) {
       message += L"\n\nDetails:\n" + debugInfo;
@@ -493,25 +499,29 @@ void AIAssistantPanel::initiateCopilotSignIn() {
     updateChatDisplay();
     return;
   }
-  
+
   _copilotAuthInProgress = true;
   _copilotLastPendingTick = GetTickCount();
   _copilotLastDebugInfo.clear();
   updateModelCombo();
-  
-  std::wstring authMessage = 
+
+  std::wstring authMessage =
       L"To sign in to GitHub Copilot:\n\n"
-      L"1. Go to: " + _copilotDeviceCode.verificationUri + L"\n"
-      L"2. Enter code: " + _copilotDeviceCode.userCode + L"\n\n"
+      L"1. Go to: " +
+      _copilotDeviceCode.verificationUri +
+      L"\n"
+      L"2. Enter code: " +
+      _copilotDeviceCode.userCode +
+      L"\n\n"
       L"Waiting for authorization...\n"
       L"This can take up to a couple of minutes. Keep this window open.";
-  
+
   addMessageToChat(false, authMessage);
   updateChatDisplay();
-  
-  ::ShellExecuteW(nullptr, L"open", _copilotDeviceCode.verificationUri.c_str(), 
+
+  ::ShellExecuteW(nullptr, L"open", _copilotDeviceCode.verificationUri.c_str(),
                   nullptr, nullptr, SW_SHOWNORMAL);
-  
+
   DWORD interval = static_cast<DWORD>(_copilotDeviceCode.interval) * 1000;
   if (interval < COPILOT_POLL_INTERVAL_MS) {
     interval = COPILOT_POLL_INTERVAL_MS;
@@ -525,10 +535,11 @@ void AIAssistantPanel::pollCopilotAuth() {
     ::KillTimer(_hSelf, COPILOT_POLL_TIMER_ID);
     return;
   }
-  
+
   CopilotTokens tempTokens;
-  int pollResult = LLMApiClient::pollCopilotAccessToken(_copilotDeviceCode.deviceCode, tempTokens);
-  
+  int pollResult = LLMApiClient::pollCopilotAccessToken(
+      _copilotDeviceCode.deviceCode, tempTokens);
+
   if (pollResult == 1 && !tempTokens.oauthToken.empty()) {
     _copilotTokens = tempTokens;
     onCopilotAuthComplete(true);
@@ -539,8 +550,10 @@ void AIAssistantPanel::pollCopilotAuth() {
     if (debugInfo.find(L"slow_down") != std::wstring::npos) {
       _copilotPollIntervalMs += 5000;
       ::KillTimer(_hSelf, COPILOT_POLL_TIMER_ID);
-      ::SetTimer(_hSelf, COPILOT_POLL_TIMER_ID, _copilotPollIntervalMs, nullptr);
-      addMessageToChat(false, L"GitHub asked to slow down. Polling less frequently...");
+      ::SetTimer(_hSelf, COPILOT_POLL_TIMER_ID, _copilotPollIntervalMs,
+                 nullptr);
+      addMessageToChat(
+          false, L"GitHub asked to slow down. Polling less frequently...");
       updateChatDisplay();
     }
     if (!debugInfo.empty() && debugInfo != _copilotLastDebugInfo) {
@@ -560,12 +573,14 @@ void AIAssistantPanel::pollCopilotAuth() {
 void AIAssistantPanel::onCopilotAuthComplete(bool success) {
   ::KillTimer(_hSelf, COPILOT_POLL_TIMER_ID);
   _copilotAuthInProgress = false;
-  
+
   if (success) {
     saveCopilotTokenToStorage();
-    addMessageToChat(false, L"Successfully signed in to GitHub Copilot! You can now use Copilot as your AI provider.");
+    addMessageToChat(false, L"Successfully signed in to GitHub Copilot! You "
+                            L"can now use Copilot as your AI provider.");
   } else {
-    std::wstring message = L"[Error] Failed to complete GitHub Copilot sign-in. Please try again.";
+    std::wstring message =
+        L"[Error] Failed to complete GitHub Copilot sign-in. Please try again.";
     std::wstring debugInfo = LLMApiClient::getLastCopilotAuthDebug();
     if (!debugInfo.empty()) {
       message += L"\n\nDetails:\n" + debugInfo;
@@ -588,14 +603,15 @@ void AIAssistantPanel::loadCopilotTokenFromStorage() {
 
 void AIAssistantPanel::saveCopilotTokenToStorage() {
   if (!_copilotTokens.oauthToken.empty()) {
-    SecureStorage::saveApiKey(L"copilot_oauth_token", _copilotTokens.oauthToken);
+    SecureStorage::saveApiKey(L"copilot_oauth_token",
+                              _copilotTokens.oauthToken);
   }
 }
 
 void AIAssistantPanel::applyDarkModeTheme() {
   NppDarkMode::autoSubclassAndThemeChildControls(_hSelf);
   NppDarkMode::autoSubclassAndThemeWindowNotify(_hSelf);
-  
+
   if (NppDarkMode::isEnabled()) {
     _bgColor = NppDarkMode::getCtrlBackgroundColor();
     _fgColor = NppDarkMode::getTextColor();
@@ -603,7 +619,7 @@ void AIAssistantPanel::applyDarkModeTheme() {
     _bgColor = RGB(255, 255, 255);
     _fgColor = RGB(0, 0, 0);
   }
-  
+
   ::InvalidateRect(_hSelf, nullptr, TRUE);
 }
 
@@ -611,39 +627,35 @@ void AIAssistantPanel::updateChatFont() {
   if (_chatFont) {
     ::DeleteObject(_chatFont);
   }
-  
+
   HDC hdc = ::GetDC(_hSelf);
   int logPixelsY = ::GetDeviceCaps(hdc, LOGPIXELSY);
   ::ReleaseDC(_hSelf, hdc);
-  
+
   int fontHeight = -MulDiv(_fontSize, logPixelsY, 72);
-  
-  _chatFont = ::CreateFontW(
-      fontHeight, 0, 0, 0,
-      FW_NORMAL, FALSE, FALSE, FALSE,
-      DEFAULT_CHARSET,
-      OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-      CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
-      L"Consolas");
-  
+
+  _chatFont = ::CreateFontW(fontHeight, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+                            DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+                            CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
+                            DEFAULT_PITCH | FF_DONTCARE, L"Consolas");
+
   if (!_chatFont) {
-    _chatFont = ::CreateFontW(
-        fontHeight, 0, 0, 0,
-        FW_NORMAL, FALSE, FALSE, FALSE,
-        DEFAULT_CHARSET,
-        OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-        CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
-        L"Segoe UI");
+    _chatFont = ::CreateFontW(fontHeight, 0, 0, 0, FW_NORMAL, FALSE, FALSE,
+                              FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+                              CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
+                              DEFAULT_PITCH | FF_DONTCARE, L"Segoe UI");
   }
-  
+
   HWND hChatHistory = ::GetDlgItem(_hSelf, IDC_AI_CHAT_HISTORY);
   HWND hInputEdit = ::GetDlgItem(_hSelf, IDC_AI_INPUT_EDIT);
-  
+
   if (hChatHistory && _chatFont) {
-    ::SendMessage(hChatHistory, WM_SETFONT, reinterpret_cast<WPARAM>(_chatFont), TRUE);
+    ::SendMessage(hChatHistory, WM_SETFONT, reinterpret_cast<WPARAM>(_chatFont),
+                  TRUE);
   }
   if (hInputEdit && _chatFont) {
-    ::SendMessage(hInputEdit, WM_SETFONT, reinterpret_cast<WPARAM>(_chatFont), TRUE);
+    ::SendMessage(hInputEdit, WM_SETFONT, reinterpret_cast<WPARAM>(_chatFont),
+                  TRUE);
   }
 }
 
@@ -664,10 +676,11 @@ void AIAssistantPanel::decreaseFontSize() {
 void AIAssistantPanel::updateModelCombo() {
   HWND hModelCombo = ::GetDlgItem(_hSelf, IDC_AI_MODEL_COMBO);
   HWND hSignInBtn = ::GetDlgItem(_hSelf, IDC_AI_COPILOT_SIGNIN_BUTTON);
-  if (!hModelCombo) return;
-  
+  if (!hModelCombo)
+    return;
+
   ::SendMessage(hModelCombo, CB_RESETCONTENT, 0, 0);
-  
+
   bool isCopilot = (_currentProvider == LLMProvider::Copilot);
   if (hSignInBtn) {
     ::ShowWindow(hSignInBtn, isCopilot ? SW_SHOW : SW_HIDE);
@@ -682,40 +695,70 @@ void AIAssistantPanel::updateModelCombo() {
       ::EnableWindow(hSignInBtn, TRUE);
     }
   }
-  
+
   switch (_currentProvider) {
   case LLMProvider::OpenAI:
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gpt-4o"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gpt-4o-mini"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gpt-4-turbo"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"o1"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"o1-mini"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gpt-4o"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gpt-4o-mini"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gpt-4-turbo"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"o1"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"o1-mini"));
     _currentModel = L"gpt-4o-mini";
     break;
   case LLMProvider::Gemini:
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gemini-2.0-flash"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gemini-1.5-pro"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gemini-1.5-flash"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gemini-2.0-flash"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gemini-1.5-pro"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gemini-1.5-flash"));
     _currentModel = L"gemini-2.0-flash";
     break;
   case LLMProvider::Claude:
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"claude-sonnet-4-20250514"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"claude-3-5-sonnet-20241022"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"claude-3-5-haiku-20241022"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"claude-3-opus-20240229"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"claude-sonnet-4-20250514"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"claude-3-5-sonnet-20241022"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"claude-3-5-haiku-20241022"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"claude-3-opus-20240229"));
     _currentModel = L"claude-sonnet-4-20250514";
     break;
   case LLMProvider::Copilot:
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gpt-4o"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"gpt-4"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"claude-3.5-sonnet"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"o1-mini"));
-    ::SendMessage(hModelCombo, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(L"o1-preview"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gpt-4o"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"gpt-4"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"claude-3.5-sonnet"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"o1-mini"));
+    ::SendMessage(hModelCombo, CB_ADDSTRING, 0,
+                  reinterpret_cast<LPARAM>(L"o1-preview"));
     _currentModel = L"gpt-4o";
     break;
   default:
     break;
   }
-  
+
   ::SendMessage(hModelCombo, CB_SETCURSEL, 0, 0);
+
+  // Ensure dropdown is wide enough for long model names (e.g.
+  // "claude-sonnet-4-20250514")
+  ::SendMessage(hModelCombo, CB_SETDROPPEDWIDTH, 250, 0);
+}
+
+void AIAssistantPanel::setPromptText(const std::wstring &text) {
+  HWND hInput = ::GetDlgItem(_hSelf, IDC_AI_INPUT_EDIT);
+  if (hInput) {
+    ::SetWindowTextW(hInput, text.c_str());
+    // Auto-send the prompt
+    sendMessage(text);
+  }
 }

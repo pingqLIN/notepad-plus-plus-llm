@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <ctime>
 #include <map>
 #include <string>
-#include <ctime>
+#include <vector>
 
 struct HttpResponse;
 
@@ -28,6 +29,12 @@ struct LLMResponse {
   std::wstring content;
   std::wstring errorMessage;
   int tokensUsed = 0;
+};
+
+struct ModelListResponse {
+  bool success = false;
+  std::vector<std::wstring> models;
+  std::wstring errorMessage;
 };
 
 struct CopilotDeviceCode {
@@ -58,6 +65,12 @@ public:
   static LLMResponse
   callClaude(const std::wstring &apiKey, const std::wstring &prompt,
              const std::wstring &model = L"claude-sonnet-4-20250514");
+
+  static ModelListResponse listOpenAIModels(const std::wstring &apiKey);
+
+  static ModelListResponse listGeminiModels(const std::wstring &apiKey);
+
+  static ModelListResponse listClaudeModels(const std::wstring &apiKey);
 
   static CopilotDeviceCode initiateCopilotDeviceFlow();
   

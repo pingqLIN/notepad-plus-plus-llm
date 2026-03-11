@@ -16,6 +16,7 @@
 
 #include "LLMApiClient.h"
 #include "HttpClient.h"
+#include <algorithm>
 #include <regex>
 #include <sstream>
 
@@ -97,6 +98,27 @@ std::wstring redactValue(const std::wstring &body, const std::wstring &value) {
   }
 
   return result;
+}
+
+bool startsWith(const std::wstring &value, const std::wstring &prefix) {
+  return value.size() >= prefix.size() &&
+         value.compare(0, prefix.size(), prefix) == 0;
+}
+
+void addUniqueModel(std::vector<std::wstring> &models, const std::wstring &model) {
+  if (model.empty()) {
+    return;
+  }
+
+  if (std::find(models.begin(), models.end(), model) == models.end()) {
+    models.push_back(model);
+  }
+}
+
+bool isLikelyOpenAIChatModel(const std::wstring &model) {
+  return startsWith(model, L"gpt-") || startsWith(model, L"chatgpt-") ||
+         startsWith(model, L"o1") || startsWith(model, L"o3") ||
+         startsWith(model, L"o4");
 }
 
 }
@@ -315,6 +337,145 @@ std::wstring LLMApiClient::extractJsonPath(const std::wstring &json,
   }
 
   return current;
+}
+
+ModelListResponse LLMApiClient::listOpenAIModels(const std::wstring &apiKey) {
+  ModelListResponse response;
+
+  if (apiKey.empty()) {
+    response.errorMessage = L"OpenAI API key is not configured";
+    return response;
+  }
+
+  std::map<std::wstring, std::wstring> headers;
+  headers[L"Authorization"] = L"Bearer " + apiKey;
+
+  HttpResponse httpResponse = HttpClient::get(L"https://api.openai.com/v1/models", headers);
+  if (!httpResponse.success) {
+    response.errorMessage = L"HTTP request failed: " + httpResponse.errorMessage;
+    if (!httpResponse.body.empty()) {
+      std::wstring errorMsg = extractJsonValue(httpResponse.body, L"message");
+      if (!errorMsg.empty()) {
+        response.errorMessage += L"\n" + errorMsg;
+      }
+    }
+    return response;
+  }
+
+  std::wregex idPattern(L"\"id\"\\s*:\\s*\"([^\"]+)\"");
+  for (std::wsregex_iterator it(httpResponse.body.begin(), httpResponse.body.end(),
+                                idPattern),
+       end;
+       it != end; ++it) {
+    const std::wstring model = (*it)[1].str();
+    if (isLikelyOpenAIChatModel(model)) {
+      addUniqueModel(response.models, model);
+    }
+  }
+
+  if (response.models.empty()) {
+    response.errorMessage = L"OpenAI returned no chat models";
+    return response;
+  }
+
+  response.success = true;
+  return response;
+}
+
+ModelListResponse LLMApiClient::listGeminiModels(const std::wstring &apiKey) {
+  ModelListResponse response;
+
+  if (apiKey.empty()) {
+    response.errorMessage = L"Gemini API key is not configured";
+    return response;
+  }
+
+  const std::wstring url =
+      L"https://generativelanguage.googleapis.com/v1beta/models?key=" + apiKey;
+  HttpResponse httpResponse = HttpClient::get(url);
+  if (!httpResponse.success) {
+    response.errorMessage = L"HTTP request failed: " + httpResponse.errorMessage;
+    if (!httpResponse.body.empty()) {
+      std::wstring errorMsg = extractJsonValue(httpResponse.body, L"message");
+      if (!errorMsg.empty()) {
+        response.errorMessage += L"\n" + errorMsg;
+      }
+    }
+    return response;
+  }
+
+  std::wregex modelPattern(
+      L"\"name\"\\s*:\\s*\"models/([^\"]+)\"[\\s\\S]*?\"supportedGenerationMethods\"\\s*:\\s*\\[([\\s\\S]*?)\\]");
+  for (std::wsregex_iterator it(httpResponse.body.begin(), httpResponse.body.end(),
+                                modelPattern),
+       end;
+       it != end; ++it) {
+    std::wstring model = (*it)[1].str();
+    std::wstring methods = (*it)[2].str();
+    if (methods.find(L"generateContent") != std::wstring::npos &&
+        startsWith(model, L"gemini")) {
+      addUniqueModel(response.models, model);
+    }
+  }
+
+  if (response.models.empty()) {
+    std::wregex fallbackPattern(L"\"name\"\\s*:\\s*\"models/(gemini[^\"]+)\"");
+    for (std::wsregex_iterator it(httpResponse.body.begin(), httpResponse.body.end(),
+                                  fallbackPattern),
+         end;
+         it != end; ++it) {
+      addUniqueModel(response.models, (*it)[1].str());
+    }
+  }
+
+  if (response.models.empty()) {
+    response.errorMessage = L"Gemini returned no compatible models";
+    return response;
+  }
+
+  response.success = true;
+  return response;
+}
+
+ModelListResponse LLMApiClient::listClaudeModels(const std::wstring &apiKey) {
+  ModelListResponse response;
+
+  if (apiKey.empty()) {
+    response.errorMessage = L"Claude API key is not configured";
+    return response;
+  }
+
+  std::map<std::wstring, std::wstring> headers;
+  headers[L"x-api-key"] = apiKey;
+  headers[L"anthropic-version"] = L"2023-06-01";
+
+  HttpResponse httpResponse = HttpClient::get(L"https://api.anthropic.com/v1/models", headers);
+  if (!httpResponse.success) {
+    response.errorMessage = L"HTTP request failed: " + httpResponse.errorMessage;
+    if (!httpResponse.body.empty()) {
+      std::wstring errorMsg = extractJsonValue(httpResponse.body, L"message");
+      if (!errorMsg.empty()) {
+        response.errorMessage += L"\n" + errorMsg;
+      }
+    }
+    return response;
+  }
+
+  std::wregex idPattern(L"\"id\"\\s*:\\s*\"([^\"]+)\"");
+  for (std::wsregex_iterator it(httpResponse.body.begin(), httpResponse.body.end(),
+                                idPattern),
+       end;
+       it != end; ++it) {
+    addUniqueModel(response.models, (*it)[1].str());
+  }
+
+  if (response.models.empty()) {
+    response.errorMessage = L"Claude returned no models";
+    return response;
+  }
+
+  response.success = true;
+  return response;
 }
 
 LLMResponse LLMApiClient::callOpenAI(const std::wstring &apiKey,

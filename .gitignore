@@ -165,3 +165,17 @@ PowerEditor/src/MISC/md5/RCa06792
 *.db
 *.sln
 *.opendb
+
+#-------------------------------------------------------------------------------
+# Local AI plugin working files
+
+tmp_backup/
+dist/
+diff.patch
+diff_cpp.patch
+diff_h.patch
+diff_cmds.patch
+diff_menu.patch
+real_diff.patch
+test_screenshot.png
+螢幕擷取畫面*.png

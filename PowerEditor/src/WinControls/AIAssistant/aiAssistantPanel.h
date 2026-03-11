@@ -16,12 +16,11 @@
 
 #pragma once
 
+#include "../../MISC/Common/LLMApiClient.h"
 #include "DockingDlgInterface.h"
 #include "aiAssistantPanel_rc.h"
-#include "../../MISC/Common/LLMApiClient.h"
 #include <string>
 #include <vector>
-
 
 #define AI_PANELTITLE L"AI Assistant"
 
@@ -82,6 +81,9 @@ public:
   // Clear chat history
   void clearChatHistory();
 
+  // Set prompt text from Edit menu AI commands
+  void setPromptText(const std::wstring &text);
+
   void setBackgroundColor(COLORREF bgColour) override { _bgColor = bgColour; }
   void setForegroundColor(COLORREF fgColour) override { _fgColor = fgColour; }
 
@@ -96,7 +98,7 @@ private:
   AIAssistantConfig _config;
   COLORREF _bgColor = RGB(255, 255, 255);
   COLORREF _fgColor = RGB(0, 0, 0);
-  
+
   // GitHub Copilot OAuth state
   CopilotTokens _copilotTokens;
   CopilotDeviceCode _copilotDeviceCode;
@@ -105,11 +107,11 @@ private:
   DWORD _copilotLastPendingTick = 0;
   DWORD _copilotPollIntervalMs = 5000;
   std::wstring _copilotLastDebugInfo;
-  
+
   // Font management
   HFONT _chatFont = nullptr;
   int _fontSize = 10;
-  
+
   // Model selection
   std::wstring _currentModel;
 
@@ -120,14 +122,14 @@ private:
   std::wstring getProviderName(LLMProvider provider);
   void initControls();
   void resizeControls();
-  
+
   // Copilot OAuth helpers
   void initiateCopilotSignIn();
   void pollCopilotAuth();
   void onCopilotAuthComplete(bool success);
   void loadCopilotTokenFromStorage();
   void saveCopilotTokenToStorage();
-  
+
   // Theme and font helpers
   void applyDarkModeTheme();
   void updateChatFont();

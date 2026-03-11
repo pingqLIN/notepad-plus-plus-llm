@@ -74,14 +74,6 @@ https://npp-user-manual.org/docs/config-files/#the-context-menu-contextmenu-xml
         <Item MenuEntryName="Edit" MenuItemName="Block Comment"/>
         <Item MenuEntryName="Edit" MenuItemName="Block Uncomment"/>
         <Item id="0"/>
-        
-        <!-- AI Assistant Quick Actions -->
-        <Item FolderName="AI Assistant" id="42110" ItemNameAs="Explain Code"/>
-        <Item FolderName="AI Assistant" id="42111" ItemNameAs="Refactor Code"/>
-        <Item FolderName="AI Assistant" id="42112" ItemNameAs="Add Comments"/>
-        <Item FolderName="AI Assistant" id="42113" ItemNameAs="Fix Code"/>
-        <Item FolderName="AI Assistant" id="42114" ItemNameAs="Custom Prompt..."/>
-        
         <Item id="0"/>
         <Item MenuEntryName="View" MenuItemName="Hide lines"/>
     </ScintillaContextMenu>
