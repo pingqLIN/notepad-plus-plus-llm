@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Legacy / Superseded repository**
+>
+> This repository is retained for historical reference only. Active development, releases, issues, and Notepad++ Plugins Admin delivery have moved to **[pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant)**.
+>
+> Please use `NppAIAssistant` for current source code and all future contributions. No new feature development is planned here.
+
 # NppAIAssistant for Notepad++
 
 [繁體中文](README_zh-TW.md)
