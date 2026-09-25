@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Legacy / Superseded repository**
+>
+> This repository is retained for historical reference only. Active development, releases, issues, and Notepad++ Plugins Admin delivery have moved to **[pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant)**.
+>
+> Please use `NppAIAssistant` for current source code and all future contributions. No new feature development is planned here.
+
 # NppAIAssistant for Notepad++
 
 [繁體中文](README_zh-TW.md)
@@ -103,8 +110,4 @@ For plugin-focused work, use MSBuild on Windows:
 
 ## Status
 
-This is an active Notepad++ AI plugin refactor with emphasis on:
-- practical installation
-- visible prompting
-- low coupling
-- predictable single-turn behavior
+**Legacy / superseded.** This repository is frozen as a historical integration reference. Current development, releases, issues, and contribution work continue in [pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant).

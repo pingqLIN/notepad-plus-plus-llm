@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Legacy／已由 NppAIAssistant 取代**
+>
+> 本 repository 僅保留作為歷史與完整 Notepad++ fork 整合參考。現行開發、Release、Issue 與 Notepad++ Plugins Admin 官方交付皆已移至 **[pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant)**。
+>
+> 請以 `NppAIAssistant` 作為目前唯一正式來源；本 repository 不再進行新功能開發。
+
 # NppAIAssistant for Notepad++
 
 [English](README.md)
@@ -101,10 +108,6 @@ AI 助手以獨立 Notepad++ 外掛形式運作。這代表主程式更乾淨、
 & "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" "plugins\NppAIAssistant\NppAIAssistant.vcxproj" /p:Configuration=Release /p:Platform=x64 /m
 ```
 
-## 目前方向
+## 目前狀態
 
-這是一個持續整理中的 Notepad++ AI 外掛改造專案，目前重點放在：
-- 安裝方式務實可用
-- 提示詞透明可視
-- 降低與主程式耦合
-- 維持可預期的單輪行為
+**Legacy／已由 NppAIAssistant 取代。** 本 repository 已凍結為歷史整合參考；現行開發、Release、Issue 與貢獻請移至 [pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant)。
