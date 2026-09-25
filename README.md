@@ -110,8 +110,4 @@ For plugin-focused work, use MSBuild on Windows:
 
 ## Status
 
-This is an active Notepad++ AI plugin refactor with emphasis on:
-- practical installation
-- visible prompting
-- low coupling
-- predictable single-turn behavior
+**Legacy / superseded.** This repository is frozen as a historical integration reference. Current development, releases, issues, and contribution work continue in [pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant).
