@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **Legacy／已由 NppAIAssistant 取代**
+>
+> 本 repository 僅保留作為歷史與完整 Notepad++ fork 整合參考。現行開發、Release、Issue 與 Notepad++ Plugins Admin 官方交付皆已移至 **[pingqLIN/NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant)**。
+>
+> 請以 `NppAIAssistant` 作為目前唯一正式來源；本 repository 不再進行新功能開發。
+
 # NppAIAssistant for Notepad++
 
 [English](README.md)
